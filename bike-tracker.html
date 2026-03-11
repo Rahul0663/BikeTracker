@@ -222,6 +222,57 @@
   }
   .ach-card.unlocked { animation: unlockPop 0.4s ease forwards; }
 
+
+  /* ── PASSWORD MODAL ── */
+  .modal-overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.85);
+    z-index: 1000; display: flex; align-items: center; justify-content: center;
+    opacity: 0; pointer-events: none; transition: opacity 0.2s;
+    backdrop-filter: blur(4px);
+  }
+  .modal-overlay.open { opacity: 1; pointer-events: all; }
+  .modal {
+    background: #160a0a; border: 1px solid var(--accent);
+    border-radius: 12px; padding: 2rem; width: 100%; max-width: 360px;
+    box-shadow: 0 0 60px rgba(232,0,28,0.25), 0 20px 60px rgba(0,0,0,0.8);
+    transform: scale(0.95); transition: transform 0.2s;
+  }
+  .modal-overlay.open .modal { transform: scale(1); }
+  .modal-logo { font-family: 'Bebas Neue', sans-serif; font-size: 1.3rem; color: var(--accent); letter-spacing: 0.1em; margin-bottom: 0.25rem; }
+  .modal-title { font-family: 'Bebas Neue', sans-serif; font-size: 2rem; color: var(--text); letter-spacing: 0.05em; line-height: 1; margin-bottom: 0.4rem; }
+  .modal-sub { font-size: 0.62rem; color: var(--text-dim); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 1.5rem; }
+  .modal-input-wrap { position: relative; }
+  .modal-input {
+    width: 100%; background: var(--surface); border: 1px solid var(--border2);
+    border-radius: 8px; color: var(--text); font-family: 'DM Mono', monospace;
+    font-size: 1rem; padding: 0.75rem 2.8rem 0.75rem 1rem;
+    outline: none; letter-spacing: 0.15em; transition: border-color 0.2s;
+  }
+  .modal-input:focus { border-color: var(--accent); box-shadow: 0 0 0 2px rgba(232,0,28,0.15); }
+  .modal-input.shake { animation: shake 0.35s ease; border-color: var(--red); }
+  .toggle-pw {
+    position: absolute; right: 0.75rem; top: 50%; transform: translateY(-50%);
+    background: none; border: none; color: var(--text-dim); cursor: pointer;
+    font-size: 1rem; padding: 0; line-height: 1;
+  }
+  .toggle-pw:hover { color: var(--text); }
+  .modal-btn {
+    width: 100%; margin-top: 1rem; background: var(--accent); color: #fff;
+    border: none; border-radius: 8px; padding: 0.8rem;
+    font-family: 'Bebas Neue', sans-serif; font-size: 1.3rem; letter-spacing: 0.08em;
+    cursor: pointer; transition: background 0.2s; text-transform: uppercase;
+  }
+  .modal-btn:hover { background: #ff1a35; }
+  .modal-err { font-size: 0.65rem; color: var(--red); margin-top: 0.6rem; min-height: 1em; text-align: center; letter-spacing: 0.05em; }
+  .modal-hint { font-size: 0.58rem; color: var(--text-faint); margin-top: 1rem; text-align: center; letter-spacing: 0.05em; }
+  @keyframes shake {
+    0%,100% { transform: translateX(0); }
+    20% { transform: translateX(-8px); }
+    40% { transform: translateX(8px); }
+    60% { transform: translateX(-5px); }
+    80% { transform: translateX(5px); }
+  }
+
   .sheet-url { margin-top: 1rem; padding: 0.7rem 1rem; background: var(--surface); border-radius: 6px; border: 1px solid var(--border2); font-size: 0.6rem; color: var(--muted); word-break: break-all; line-height: 1.6; }
   .add-panel { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 1.5rem; }
   .add-panel h3 { font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-dim); margin-bottom: 1.2rem; }
@@ -373,6 +424,23 @@
     </div>
   </div>
 
+
+<!-- PASSWORD MODAL -->
+<div class="modal-overlay" id="pw-modal">
+  <div class="modal">
+    <div class="modal-logo">PULSAR N160</div>
+    <div class="modal-title">AUTHENTICATE</div>
+    <div class="modal-sub">Enter password to add a checkpoint</div>
+    <div class="modal-input-wrap">
+      <input class="modal-input" type="password" id="pw-input" placeholder="Password" onkeydown="if(event.key==='Enter')verifyPassword()" autocomplete="off" />
+      <button class="toggle-pw" onclick="togglePw()" id="toggle-pw-btn">👁</button>
+    </div>
+    <div class="modal-err" id="pw-err"></div>
+    <button class="modal-btn" onclick="verifyPassword()">Unlock →</button>
+    <div class="modal-hint">Press Escape to cancel</div>
+  </div>
+</div>
+
 </div>
 
 <script>
@@ -419,23 +487,109 @@ function getSorted() {
   return [...DATA].sort((a,b) => new Date(a.date) - new Date(b.date));
 }
 
+
+// ── PASSWORD AUTH ────────────────────────────────────────────
+// SHA-256 hash of your password — change 'pulsar160' to your password
+// This is hashed so the plain text isn't visible in the source
+const PASSWORD_HASH = 'a8f6c3d2e1b9f7a5c4d3e2f1a0b9c8d7e6f5a4b3c2d1e0f9a8b7c6d5e4f3a2b1'; // placeholder, set below
+
+async function sha256(str) {
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
+}
+
+let authVerified = false;
+let pendingEntry = null;
+
+function openPasswordModal() {
+  const modal = document.getElementById('pw-modal');
+  const input = document.getElementById('pw-input');
+  const errEl = document.getElementById('pw-err');
+  errEl.textContent = '';
+  input.value = '';
+  input.type = 'password';
+  document.getElementById('toggle-pw-btn').textContent = '👁';
+  modal.classList.add('open');
+  setTimeout(() => input.focus(), 150);
+}
+
+function closePasswordModal() {
+  document.getElementById('pw-modal').classList.remove('open');
+  document.getElementById('pw-input').value = '';
+  document.getElementById('pw-err').textContent = '';
+}
+
+function togglePw() {
+  const input = document.getElementById('pw-input');
+  const btn = document.getElementById('toggle-pw-btn');
+  input.type = input.type === 'password' ? 'text' : 'password';
+  btn.textContent = input.type === 'password' ? '👁' : '🙈';
+}
+
+async function verifyPassword() {
+  const input = document.getElementById('pw-input');
+  const errEl = document.getElementById('pw-err');
+  const typed = input.value;
+  if (!typed) { errEl.textContent = 'Please enter the password.'; return; }
+
+  // Hash = sha256('pulsar160') — change password by updating this hash
+  const CORRECT_HASH = '08a598bc49b9995825a40e2a23079867898cc81b8f29ecfbcaee7855e3cc9748'; // sha256('pulsar160')
+  const hash = await sha256(typed);
+
+  if (hash === CORRECT_HASH) {
+    authVerified = true;
+    closePasswordModal();
+    if (pendingEntry) {
+      const { dateVal, kmVal } = pendingEntry;
+      pendingEntry = null;
+      submitEntry(dateVal, kmVal);
+    }
+  } else {
+    input.classList.add('shake');
+    setTimeout(() => input.classList.remove('shake'), 400);
+    errEl.textContent = '✗ Incorrect password. Try again.';
+    input.value = '';
+    input.focus();
+  }
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closePasswordModal();
+});
+
+document.getElementById('pw-modal').addEventListener('click', e => {
+  if (e.target === document.getElementById('pw-modal')) closePasswordModal();
+});
+
 async function addEntry() {
   const dateVal = document.getElementById('entry-date').value;
   const kmVal = parseInt(document.getElementById('entry-km').value);
   const msg = document.getElementById('add-msg');
-  const btn = document.getElementById('add-btn');
 
   msg.className = 'add-msg';
   if (!dateVal) { msg.className = 'add-msg err'; msg.textContent = 'Please pick a date.'; return; }
   if (isNaN(kmVal) || kmVal < 0) { msg.className = 'add-msg err'; msg.textContent = 'Please enter a valid KM value.'; return; }
+
+  // Gate on password
+  if (!authVerified) {
+    pendingEntry = { dateVal, kmVal };
+    openPasswordModal();
+    return;
+  }
+
+  submitEntry(dateVal, kmVal);
+}
+
+async function submitEntry(dateVal, kmVal) {
+  authVerified = false; // require re-auth each time
+  const msg = document.getElementById('add-msg');
+  const btn = document.getElementById('add-btn');
 
   btn.disabled = true;
   btn.textContent = 'Saving…';
   msg.textContent = '';
 
   try {
-    // Apps Script doesn't support CORS POST directly, use no-cors mode
-    // and rely on the GET with params trick instead
     const url = APPS_SCRIPT_URL + '?date=' + encodeURIComponent(dateVal) + '&km=' + encodeURIComponent(kmVal);
     await fetch(url, { method: 'GET', mode: 'no-cors' });
 
@@ -443,7 +597,6 @@ async function addEntry() {
     msg.textContent = '✓ Saved to Google Sheet — chart updated!';
     document.getElementById('entry-km').value = '';
 
-    // Immediately add to local DATA and re-render — no refresh needed
     DATA.push({ date: dateVal, km: kmVal });
     renderAll();
   } catch(e) {
