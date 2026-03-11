@@ -11,20 +11,20 @@
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
-    --bg: #0d0f0e;
-    --surface: #131614;
-    --card: #181c1a;
-    --card2: #1c211e;
-    --border: #252a27;
-    --border2: #2e3530;
-    --accent: #b5f23e;
-    --accent2: #39d98a;
-    --accent3: #f2c13e;
-    --red: #f25a5a;
-    --muted: #4a5450;
-    --text: #e8ede9;
-    --text-dim: #7a8a80;
-    --text-faint: #3e4e48;
+    --bg: #0a0a0a;
+    --surface: #111111;
+    --card: #161616;
+    --card2: #1c1c1c;
+    --border: #2a2020;
+    --border2: #3a2525;
+    --accent: #e8001c;
+    --accent2: #ff3347;
+    --accent3: #ff6600;
+    --red: #ff1a1a;
+    --muted: #5a3a3a;
+    --text: #f0e8e8;
+    --text-dim: #8a6a6a;
+    --text-faint: #3a2a2a;
   }
 
   body {
@@ -33,6 +33,22 @@
     font-family: 'DM Mono', monospace;
     min-height: 100vh;
     padding: 2rem 1.5rem 4rem;
+    background-image:
+      repeating-linear-gradient(
+        90deg,
+        transparent,
+        transparent 119px,
+        rgba(232,0,28,0.03) 120px
+      );
+  }
+  body::after {
+    content: '';
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, #e8001c 30%, #ff3347 50%, #e8001c 70%, transparent);
+    pointer-events: none;
+    z-index: 999;
   }
 
   .wrapper { max-width: 980px; margin: 0 auto; }
@@ -42,13 +58,9 @@
     justify-content: space-between;
     margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;
   }
-  .title-block h1 {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: clamp(2.8rem, 7vw, 5.5rem);
-    line-height: 0.9; color: var(--accent);
-    text-shadow: 0 0 50px rgba(181,242,62,0.2);
-  }
-  .title-block p { color: var(--text-dim); font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; margin-top: 0.4rem; }
+  .bike-logo { display: flex; flex-direction: column; gap: 0; }
+  .pulsar-svg { width: 200px; height: auto; display: block; filter: drop-shadow(0 0 14px rgba(232,0,28,0.5)); }
+  .subtitle { color: var(--text-dim); font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; margin-top: 0.3rem; }
   .total-badge { text-align: right; }
   .total-badge .num { font-family: 'Bebas Neue', sans-serif; font-size: clamp(2rem,5vw,3.2rem); color: var(--accent2); line-height: 1; }
   .total-badge .label { font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-dim); }
@@ -61,7 +73,7 @@
   }
   .status-left { display: flex; align-items: center; gap: 0.6rem; }
   .status-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent3); flex-shrink: 0; transition: background 0.4s; }
-  .status-dot.ok { background: var(--accent2); box-shadow: 0 0 6px rgba(57,217,138,0.6); }
+  .status-dot.ok { background: #39d98a; box-shadow: 0 0 6px rgba(57,217,138,0.6); }
   .status-dot.err { background: var(--red); }
   #fetch-status { font-size: 0.62rem; color: var(--text-dim); letter-spacing: 0.06em; }
   .refresh-btn {
@@ -70,7 +82,7 @@
     font-size: 0.6rem; letter-spacing: 0.08em; text-transform: uppercase;
     padding: 0.35rem 0.8rem; cursor: pointer; transition: border-color 0.2s, color 0.2s;
   }
-  .refresh-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .refresh-btn:hover { border-color: var(--accent); color: var(--accent); text-shadow: 0 0 8px rgba(232,0,28,0.5); }
   .refresh-btn:disabled { opacity: 0.4; cursor: not-allowed; }
 
   .stats-bar {
@@ -115,18 +127,18 @@
   .chart-label { font-size: 0.58rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-dim); margin-bottom: 1rem; }
   .grid-line { stroke: var(--border); stroke-width: 1; }
   .axis-text { fill: var(--text-dim); font-family: 'DM Mono', monospace; font-size: 10px; }
-  .line-path { fill: none; stroke: var(--accent); stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; filter: drop-shadow(0 0 6px rgba(181,242,62,0.45)); }
+  .line-path { fill: none; stroke: var(--accent); stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; filter: drop-shadow(0 0 8px rgba(232,0,28,0.6)); }
   .area-path { fill: url(#areaGrad); }
   .dot { fill: var(--bg); stroke: var(--accent); stroke-width: 2; cursor: pointer; transition: fill 0.15s; }
   .dot:hover, .dot.active { fill: var(--accent); }
   .loading-chart { height: 280px; display: flex; align-items: center; justify-content: center; color: var(--text-faint); font-size: 0.72rem; gap: 0.6rem; }
 
   .tooltip {
-    position: absolute; background: #1a2019;
+    position: absolute; background: #1a0a0a;
     border: 1px solid var(--accent); border-radius: 8px;
     padding: 0.75rem 1rem; pointer-events: none; opacity: 0;
     transition: opacity 0.12s; z-index: 20; min-width: 175px;
-    box-shadow: 0 8px 32px rgba(0,0,0,0.6), 0 0 18px rgba(181,242,62,0.1);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.7), 0 0 20px rgba(232,0,28,0.15);
   }
   .tooltip.visible { opacity: 1; }
   .tooltip .t-km { font-family: 'Bebas Neue', sans-serif; font-size: 1.7rem; color: var(--accent); line-height: 1; }
@@ -137,8 +149,8 @@
   .data-table-wrap { background: var(--card); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
   .data-table-header { display: flex; align-items: center; justify-content: space-between; padding: 1rem 1.2rem; border-bottom: 1px solid var(--border); }
   .data-table-header h3 { font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-dim); }
-  .btn { background: var(--accent); color: #0d0f0e; border: none; border-radius: 6px; padding: 0.65rem 1.4rem; font-family: 'Bebas Neue', sans-serif; font-size: 1.1rem; cursor: pointer; transition: background 0.2s; }
-  .btn:hover { background: #c8ff50; }
+  .btn { background: var(--accent); color: #ffffff; border: none; border-radius: 6px; padding: 0.65rem 1.4rem; font-family: 'Bebas Neue', sans-serif; font-size: 1.1rem; cursor: pointer; transition: background 0.2s; }
+  .btn:hover { background: #ff1a35; }
   .btn-sm { font-size: 0.55rem; font-family: 'DM Mono', monospace; padding: 0.35rem 0.7rem; letter-spacing: 0.08em; text-transform: uppercase; }
   .table-scroll { max-height: 400px; overflow-y: auto; }
   .table-scroll::-webkit-scrollbar { width: 4px; }
@@ -151,7 +163,7 @@
   tr:hover td { background: var(--card2); }
   td.km-cell { font-family: 'Bebas Neue', sans-serif; font-size: 1rem; color: var(--accent); }
   td.date-cell { color: var(--text-dim); }
-  td.delta-cell { color: var(--accent2); font-size: 0.68rem; }
+  td.delta-cell { color: #ff6666; font-size: 0.68rem; }
   td.pace-cell { color: var(--text-faint); font-size: 0.65rem; }
   .empty-state { text-align: center; padding: 3rem; color: var(--text-faint); font-size: 0.72rem; }
 
@@ -159,7 +171,73 @@
   .sheet-info h3 { font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-dim); margin-bottom: 1rem; }
   .sheet-info p { font-size: 0.72rem; color: var(--text-dim); line-height: 1.9; }
   .sheet-info code { color: var(--accent3); }
+
+  /* ── ACHIEVEMENTS ── */
+  .achievements-wrap { background: var(--card); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+  .ach-header {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.2rem 1.5rem; border-bottom: 1px solid var(--border);
+    background: linear-gradient(135deg, #1a0808, #160000);
+  }
+  .ach-title { font-family: 'Bebas Neue', sans-serif; font-size: 1.6rem; color: var(--accent); letter-spacing: 0.08em; line-height: 1; }
+  .ach-sub { font-size: 0.6rem; color: var(--text-dim); letter-spacing: 0.1em; text-transform: uppercase; margin-top: 0.25rem; }
+  .ach-xp { font-family: 'Bebas Neue', sans-serif; font-size: 2rem; color: var(--accent3); letter-spacing: 0.05em; text-shadow: 0 0 20px rgba(255,102,0,0.5); }
+  .ach-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1px; background: var(--border); }
+  .ach-card {
+    background: var(--card); padding: 1.1rem 1.2rem;
+    display: flex; gap: 1rem; align-items: flex-start;
+    transition: background 0.2s; position: relative; overflow: hidden;
+  }
+  .ach-card:hover { background: var(--card2); }
+  .ach-card.locked { opacity: 0.38; filter: grayscale(0.6); }
+  .ach-card.unlocked::after {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(232,0,28,0.04) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .ach-icon {
+    font-size: 2rem; line-height: 1; flex-shrink: 0;
+    width: 48px; height: 48px; display: flex; align-items: center; justify-content: center;
+    background: var(--surface); border-radius: 8px; border: 1px solid var(--border2);
+    position: relative;
+  }
+  .ach-card.unlocked .ach-icon { border-color: var(--accent); box-shadow: 0 0 12px rgba(232,0,28,0.3); background: #1a0808; }
+  .ach-lock { position: absolute; bottom: -2px; right: -2px; font-size: 0.65rem; }
+  .ach-info { flex: 1; min-width: 0; }
+  .ach-name { font-family: 'Bebas Neue', sans-serif; font-size: 1rem; color: var(--text); letter-spacing: 0.05em; line-height: 1.1; }
+  .ach-card.unlocked .ach-name { color: var(--accent); }
+  .ach-desc { font-size: 0.62rem; color: var(--text-dim); margin-top: 0.25rem; line-height: 1.5; letter-spacing: 0.03em; }
+  .ach-xp-tag { font-size: 0.58rem; color: var(--accent3); letter-spacing: 0.08em; text-transform: uppercase; margin-top: 0.35rem; }
+  .ach-date { font-size: 0.58rem; color: var(--accent2); letter-spacing: 0.05em; margin-top: 0.2rem; }
+  .ach-progress { margin-top: 0.5rem; }
+  .ach-progress-bar { height: 3px; background: var(--border2); border-radius: 2px; overflow: hidden; }
+  .ach-progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent2)); border-radius: 2px; transition: width 1s ease; }
+  .ach-progress-label { font-size: 0.55rem; color: var(--text-faint); margin-top: 0.25rem; letter-spacing: 0.05em; }
+
+  /* unlock animation */
+  @keyframes unlockPop {
+    0% { transform: scale(0.8); opacity: 0; }
+    60% { transform: scale(1.05); }
+    100% { transform: scale(1); opacity: 1; }
+  }
+  .ach-card.unlocked { animation: unlockPop 0.4s ease forwards; }
+
   .sheet-url { margin-top: 1rem; padding: 0.7rem 1rem; background: var(--surface); border-radius: 6px; border: 1px solid var(--border2); font-size: 0.6rem; color: var(--muted); word-break: break-all; line-height: 1.6; }
+  .add-panel { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 1.5rem; }
+  .add-panel h3 { font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-dim); margin-bottom: 1.2rem; }
+  .form-row { display: flex; gap: 0.75rem; flex-wrap: wrap; align-items: flex-end; }
+  .form-group { display: flex; flex-direction: column; gap: 0.35rem; flex: 1; min-width: 140px; }
+  .form-group label { font-size: 0.58rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-dim); }
+  .form-group input { background: var(--surface); border: 1px solid var(--border2); border-radius: 6px; color: var(--text); font-family: 'DM Mono', monospace; font-size: 0.85rem; padding: 0.6rem 0.8rem; outline: none; transition: border-color 0.2s; }
+  .form-group input:focus { border-color: var(--accent); }
+  .form-group input::placeholder { color: var(--muted); }
+  .add-btn { background: var(--accent); color: #ffffff; border: none; border-radius: 6px; padding: 0.65rem 1.6rem; font-family: 'Bebas Neue', sans-serif; font-size: 1.1rem; cursor: pointer; transition: background 0.2s, transform 0.1s; white-space: nowrap; align-self: flex-end; }
+  .add-btn:hover { background: #ff1a35; }
+  .add-btn:active { transform: scale(0.97); }
+  .add-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+  .add-msg { font-size: 0.7rem; margin-top: 0.85rem; min-height: 1.2em; }
+  .add-msg.ok { color: #39d98a; }
+  .add-msg.err { color: var(--red); }
 </style>
 </head>
 <body>
@@ -167,8 +245,26 @@
 
   <header>
     <div class="title-block">
-      <h1>MY RIDE</h1>
-      <p>Live from Google Sheets · Auto-updated</p>
+      <!-- Pulsar N160 Logo SVG -->
+      <div class="bike-logo">
+        <svg viewBox="0 0 320 80" xmlns="http://www.w3.org/2000/svg" class="pulsar-svg">
+          <!-- PULSAR wordmark -->
+          <text x="0" y="38" font-family="'Bebas Neue', sans-serif" font-size="42" fill="#e8001c" letter-spacing="4" filter="url(#glow)">PULSAR</text>
+          <!-- N160 badge -->
+          <rect x="2" y="48" width="96" height="24" rx="3" fill="none" stroke="#e8001c" stroke-width="1.5"/>
+          <text x="50" y="65" font-family="'Bebas Neue', sans-serif" font-size="17" fill="#e8001c" text-anchor="middle" letter-spacing="3">N160</text>
+          <!-- Decorative slash accent -->
+          <line x1="104" y1="48" x2="114" y2="72" stroke="#e8001c" stroke-width="1.5" opacity="0.5"/>
+          <!-- Glow filter -->
+          <defs>
+            <filter id="glow" x="-10%" y="-10%" width="120%" height="120%">
+              <feGaussianBlur stdDeviation="2" result="blur"/>
+              <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+            </filter>
+          </defs>
+        </svg>
+        <p class="subtitle">Live from Google Sheets · Auto-updated</p>
+      </div>
     </div>
     <div class="total-badge">
       <div class="num" id="total-km">–</div>
@@ -195,7 +291,9 @@
 
   <div class="tab-bar">
     <button class="tab-btn active" onclick="switchTab(this,'chart')">📈 Chart</button>
+    <button class="tab-btn" onclick="switchTab(this,'add')">➕ Add Entry</button>
     <button class="tab-btn" onclick="switchTab(this,'data')">📋 All Data</button>
+    <button class="tab-btn" onclick="switchTab(this,'achievements')">🏆 Achievements</button>
     <button class="tab-btn" onclick="switchTab(this,'info')">ℹ Sheet Info</button>
   </div>
 
@@ -227,6 +325,38 @@
     </div>
   </div>
 
+  <div class="tab-panel" id="tab-add">
+    <div class="add-panel">
+      <h3>Add New Checkpoint → saves directly to Google Sheet</h3>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Date</label>
+          <input type="date" id="entry-date" />
+        </div>
+        <div class="form-group">
+          <label>Odometer (KM)</label>
+          <input type="number" id="entry-km" placeholder="e.g. 29000" min="0" />
+        </div>
+        <button class="add-btn" id="add-btn" onclick="addEntry()">Add →</button>
+      </div>
+      <div class="add-msg" id="add-msg"></div>
+    </div>
+  </div>
+
+
+  <div class="tab-panel" id="tab-achievements">
+    <div class="achievements-wrap">
+      <div class="ach-header">
+        <div>
+          <div class="ach-title">ACHIEVEMENTS</div>
+          <div class="ach-sub" id="ach-summary">Loading…</div>
+        </div>
+        <div class="ach-xp" id="ach-xp">0 XP</div>
+      </div>
+      <div class="ach-grid" id="ach-grid"></div>
+    </div>
+  </div>
+
   <div class="tab-panel" id="tab-info">
     <div class="sheet-info">
       <h3>Data Source</h3>
@@ -247,6 +377,7 @@
 
 <script>
 const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSnxV5kXF1M-cYpXzNvG3Hx-C6eMJdoOupcrfPPFyhSAKD_tVfGwMcIItMeesCL8fdFG0its6E7PeMz/pub?output=csv';
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxpWqOk21GU1KluUcBtCNMC5sCuS_KhVJLzeukLN0hTXUPHfXX14OQNAKpJJEA1uyI7/exec';
 
 let DATA = [];
 
@@ -286,6 +417,42 @@ function parseCSV(text) {
 
 function getSorted() {
   return [...DATA].sort((a,b) => new Date(a.date) - new Date(b.date));
+}
+
+async function addEntry() {
+  const dateVal = document.getElementById('entry-date').value;
+  const kmVal = parseInt(document.getElementById('entry-km').value);
+  const msg = document.getElementById('add-msg');
+  const btn = document.getElementById('add-btn');
+
+  msg.className = 'add-msg';
+  if (!dateVal) { msg.className = 'add-msg err'; msg.textContent = 'Please pick a date.'; return; }
+  if (isNaN(kmVal) || kmVal < 0) { msg.className = 'add-msg err'; msg.textContent = 'Please enter a valid KM value.'; return; }
+
+  btn.disabled = true;
+  btn.textContent = 'Saving…';
+  msg.textContent = '';
+
+  try {
+    // Apps Script doesn't support CORS POST directly, use no-cors mode
+    // and rely on the GET with params trick instead
+    const url = APPS_SCRIPT_URL + '?date=' + encodeURIComponent(dateVal) + '&km=' + encodeURIComponent(kmVal);
+    await fetch(url, { method: 'GET', mode: 'no-cors' });
+
+    msg.className = 'add-msg ok';
+    msg.textContent = '✓ Saved to Google Sheet — chart updated!';
+    document.getElementById('entry-km').value = '';
+
+    // Immediately add to local DATA and re-render — no refresh needed
+    DATA.push({ date: dateVal, km: kmVal });
+    renderAll();
+  } catch(e) {
+    msg.className = 'add-msg err';
+    msg.textContent = '✗ Failed: ' + e.message;
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Add →';
+  }
 }
 
 async function loadData() {
@@ -328,7 +495,8 @@ async function loadData() {
   btn.disabled = false;
 }
 
-function refresh() { loadData(); }
+function refresh() { document.getElementById('entry-date').value = new Date().toISOString().slice(0,10);
+loadData(); }
 
 function renderAll() {
   const sorted = getSorted();
@@ -339,6 +507,7 @@ function renderAll() {
   renderStats(sorted);
   renderChart(sorted);
   renderTable(sorted);
+  renderAchievements();
 }
 
 function renderStats(sorted) {
@@ -382,8 +551,8 @@ function renderChart(sorted) {
   const svg = d3.select('#chart').append('svg').attr('width',W).attr('height',H);
   const defs = svg.append('defs');
   const grad = defs.append('linearGradient').attr('id','areaGrad').attr('x1',0).attr('y1',0).attr('x2',0).attr('y2',1);
-  grad.append('stop').attr('offset','0%').attr('stop-color','#b5f23e').attr('stop-opacity',0.22);
-  grad.append('stop').attr('offset','100%').attr('stop-color','#b5f23e').attr('stop-opacity',0);
+  grad.append('stop').attr('offset','0%').attr('stop-color','#e8001c').attr('stop-opacity',0.28);
+  grad.append('stop').attr('offset','100%').attr('stop-color','#e8001c').attr('stop-opacity',0);
 
   const g = svg.append('g').attr('transform',`translate(${margin.left},${margin.top})`);
   const x = d3.scaleTime().domain(d3.extent(data, d=>d.dateObj)).range([0,iW]);
@@ -460,12 +629,126 @@ function exportCSV() {
   a.click();
 }
 
+
+// ── ACHIEVEMENTS ─────────────────────────────────────────────
+const ACHIEVEMENTS = [
+  // Distance milestones
+  { id: 'km_500',    icon: '🛞', name: 'First Spin',       desc: 'Ride your first 500 km',               xp: 50,   check: s => s.km >= 500 },
+  { id: 'km_1k',     icon: '🏁', name: 'Kilometre Club',   desc: 'Hit 1,000 km on the odometer',          xp: 100,  check: s => s.km >= 1000 },
+  { id: 'km_5k',     icon: '🔥', name: 'Five Thousand',    desc: 'Reach 5,000 km — you mean business',    xp: 200,  check: s => s.km >= 5000 },
+  { id: 'km_10k',    icon: '⚡', name: 'Ten Thousand',     desc: 'Cross the 10,000 km mark',              xp: 350,  check: s => s.km >= 10000 },
+  { id: 'km_15k',    icon: '🏆', name: 'Road Warrior',     desc: '15,000 km — a true road warrior',       xp: 500,  check: s => s.km >= 15000 },
+  { id: 'km_20k',    icon: '🌟', name: 'Twenty Grand',     desc: 'The legendary 20,000 km barrier',       xp: 750,  check: s => s.km >= 20000 },
+  { id: 'km_25k',    icon: '💀', name: 'Quarter Lakh',     desc: '25,000 km — quarter lakh beast',        xp: 1000, check: s => s.km >= 25000 },
+  { id: 'km_28k',    icon: '🦅', name: 'Current Peak',     desc: 'Your current best — 28,000 km',         xp: 1200, check: s => s.km >= 28000 },
+  // Pace achievements
+  { id: 'pace_30',   icon: '💨', name: 'Speed Demon',      desc: 'Average over 30 km/day in a stretch',   xp: 300,  check: (s, stats) => stats.bestRate >= 30 },
+  { id: 'pace_50',   icon: '🚀', name: 'Rocket Rider',     desc: 'Average over 50 km/day in a stretch',   xp: 600,  check: (s, stats) => stats.bestRate >= 50 },
+  // Journey milestones
+  { id: 'months_6',  icon: '📅', name: 'Half Year',        desc: 'Riding consistently for 6 months',      xp: 150,  check: (s, stats) => stats.months >= 6 },
+  { id: 'months_12', icon: '🗓️', name: 'Full Year',        desc: 'One complete year on the road',         xp: 400,  check: (s, stats) => stats.months >= 12 },
+  { id: 'months_24', icon: '🎖️', name: 'Two Year Legend',  desc: 'Two years of riding — legendary status', xp: 800,  check: (s, stats) => stats.months >= 24 },
+  // Checkpoints
+  { id: 'logs_10',   icon: '📝', name: 'Logbook',          desc: 'Record 10 odometer checkpoints',        xp: 100,  check: (s, stats) => stats.entries >= 10 },
+  { id: 'logs_20',   icon: '📖', name: 'Historian',        desc: 'Record 20 odometer checkpoints',        xp: 200,  check: (s, stats) => stats.entries >= 20 },
+  // Special
+  { id: 'streak_1k', icon: '🎯', name: 'Thousand in One', desc: 'Cover 1,000 km between two checkpoints', xp: 400,  check: (s, stats) => stats.bigJump >= 1000 },
+  { id: 'streak_6k', icon: '🌋', name: 'Hyperjump',       desc: 'Cover 6,000 km in a single stretch',    xp: 900,  check: (s, stats) => stats.bigJump >= 6000 },
+];
+
+function computeAchievementStats(sorted) {
+  if (!sorted || sorted.length < 2) return null;
+  const first = sorted[0], last = sorted[sorted.length-1];
+  const totalDays = (new Date(last.date) - new Date(first.date)) / 86400000;
+  const months = totalDays / 30.4;
+  let bestRate = 0, bigJump = 0;
+  for (let i = 1; i < sorted.length; i++) {
+    const days = (new Date(sorted[i].date) - new Date(sorted[i-1].date)) / 86400000;
+    const diff = sorted[i].km - sorted[i-1].km;
+    const rate = days > 0 ? diff / days : 0;
+    if (rate > bestRate) bestRate = rate;
+    if (diff > bigJump) bigJump = diff;
+  }
+  return { months, bestRate, entries: sorted.length, bigJump, totalKm: last.km };
+}
+
+function getUnlockDate(ach, sorted) {
+  // Find the first checkpoint where this achievement was satisfied
+  const stats = { bestRate: 0, bigJump: 0, months: 0, entries: 0 };
+  for (let i = 0; i < sorted.length; i++) {
+    const s = sorted[i];
+    stats.entries = i + 1;
+    if (i > 0) {
+      const days = (new Date(s.date) - new Date(sorted[i-1].date)) / 86400000;
+      const diff = s.km - sorted[i-1].km;
+      const rate = days > 0 ? diff / days : 0;
+      if (rate > stats.bestRate) stats.bestRate = rate;
+      if (diff > stats.bigJump) stats.bigJump = diff;
+      stats.months = (new Date(s.date) - new Date(sorted[0].date)) / 86400000 / 30.4;
+    }
+    if (ach.check(s, stats)) return s.date;
+  }
+  return null;
+}
+
+function renderAchievements() {
+  const sorted = getSorted();
+  const stats = computeAchievementStats(sorted);
+  if (!stats) return;
+
+  const grid = document.getElementById('ach-grid');
+  const summary = document.getElementById('ach-summary');
+  const xpEl = document.getElementById('ach-xp');
+
+  let totalXP = 0;
+  let unlocked = 0;
+  const last = sorted[sorted.length - 1];
+
+  const cards = ACHIEVEMENTS.map(ach => {
+    const isUnlocked = ach.check(last, stats);
+    const unlockDate = isUnlocked ? getUnlockDate(ach, sorted) : null;
+    if (isUnlocked) { totalXP += ach.xp; unlocked++; }
+
+    // Progress for km-based ones
+    let progressHtml = '';
+    if (ach.id.startsWith('km_')) {
+      const target = parseInt(ach.id.replace('km_','').replace('k','000').replace('_',''));
+      const pct = Math.min(100, Math.round((last.km / target) * 100));
+      if (!isUnlocked) {
+        progressHtml = `<div class="ach-progress">
+          <div class="ach-progress-bar"><div class="ach-progress-fill" style="width:${pct}%"></div></div>
+          <div class="ach-progress-label">${last.km.toLocaleString()} / ${target.toLocaleString()} km (${pct}%)</div>
+        </div>`;
+      }
+    }
+
+    return `<div class="ach-card ${isUnlocked ? 'unlocked' : 'locked'}">
+      <div class="ach-icon">
+        ${ach.icon}
+        ${!isUnlocked ? '<span class="ach-lock">🔒</span>' : ''}
+      </div>
+      <div class="ach-info">
+        <div class="ach-name">${ach.name}</div>
+        <div class="ach-desc">${ach.desc}</div>
+        <div class="ach-xp-tag">+${ach.xp} XP</div>
+        ${unlockDate ? `<div class="ach-date">Unlocked ${fmtDate(new Date(unlockDate))}</div>` : ''}
+        ${progressHtml}
+      </div>
+    </div>`;
+  }).join('');
+
+  grid.innerHTML = cards;
+  xpEl.textContent = totalXP.toLocaleString() + ' XP';
+  summary.textContent = `${unlocked} of ${ACHIEVEMENTS.length} unlocked · Keep riding to earn more`;
+}
+
 function switchTab(btn, name) {
   document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
   document.getElementById('tab-'+name).classList.add('active');
   btn.classList.add('active');
   if (name==='chart') renderChart(getSorted());
+  if (name==='achievements') renderAchievements();
 }
 
 loadData();
