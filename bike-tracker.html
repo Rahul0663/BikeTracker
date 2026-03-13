@@ -125,6 +125,21 @@
     margin-bottom: 1.5rem; position: relative;
   }
   .chart-label { font-size: 0.58rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-dim); margin-bottom: 1rem; }
+  .chart-scroll-outer {
+    overflow-x: auto;
+    overflow-y: visible;
+    padding-bottom: 0.5rem;
+    /* custom scrollbar */
+    scrollbar-width: thin;
+    scrollbar-color: var(--border2) transparent;
+  }
+  .chart-scroll-outer::-webkit-scrollbar { height: 4px; }
+  .chart-scroll-outer::-webkit-scrollbar-track { background: transparent; }
+  .chart-scroll-outer::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
+  .chart-scroll-hint {
+    font-size: 0.55rem; color: var(--text-faint); letter-spacing: 0.1em;
+    text-transform: uppercase; text-align: right; margin-top: 0.4rem;
+  }
   .grid-line { stroke: var(--border); stroke-width: 1; }
   .axis-text { fill: var(--text-dim); font-family: 'DM Mono', monospace; font-size: 10px; }
   .line-path { fill: none; stroke: var(--accent); stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; filter: drop-shadow(0 0 8px rgba(232,0,28,0.6)); }
@@ -172,52 +187,7 @@
   .sheet-info p { font-size: 0.72rem; color: var(--text-dim); line-height: 1.9; }
   .sheet-info code { color: var(--accent3); }
 
-  /* ── ACHIEVEMENTS ── */
-  .achievements-wrap { background: var(--card); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
-  .ach-header {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 1.2rem 1.5rem; border-bottom: 1px solid var(--border);
-    background: linear-gradient(135deg, #1a0808, #160000);
-  }
-  .ach-title { font-family: 'Bebas Neue', sans-serif; font-size: 1.6rem; color: var(--accent); letter-spacing: 0.08em; line-height: 1; }
-  .ach-sub { font-size: 0.6rem; color: var(--text-dim); letter-spacing: 0.1em; text-transform: uppercase; margin-top: 0.25rem; }
-  .ach-xp { font-family: 'Bebas Neue', sans-serif; font-size: 2rem; color: var(--accent3); letter-spacing: 0.05em; text-shadow: 0 0 20px rgba(255,102,0,0.5); }
-  .ach-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1px; background: var(--border); }
-  .ach-card {
-    background: var(--card); padding: 1.1rem 1.2rem;
-    display: flex; gap: 1rem; align-items: flex-start;
-    transition: background 0.2s; position: relative; overflow: hidden;
-  }
-  .ach-card:hover { background: var(--card2); }
-  .ach-card.locked { opacity: 0.38; filter: grayscale(0.6); }
-  .ach-card.unlocked::after {
-    content: ''; position: absolute; inset: 0;
-    background: linear-gradient(135deg, rgba(232,0,28,0.04) 0%, transparent 60%);
-    pointer-events: none;
-  }
-  .ach-icon {
-    font-size: 2rem; line-height: 1; flex-shrink: 0;
-    width: 48px; height: 48px; display: flex; align-items: center; justify-content: center;
-    background: var(--surface); border-radius: 8px; border: 1px solid var(--border2);
-    position: relative;
-  }
-  .ach-card.unlocked .ach-icon { border-color: var(--accent); box-shadow: 0 0 12px rgba(232,0,28,0.3); background: #1a0808; }
-  .ach-lock { position: absolute; bottom: -2px; right: -2px; font-size: 0.65rem; }
-  .ach-info { flex: 1; min-width: 0; }
-  .ach-name { font-family: 'Bebas Neue', sans-serif; font-size: 1rem; color: var(--text); letter-spacing: 0.05em; line-height: 1.1; }
-  .ach-card.unlocked .ach-name { color: var(--accent); }
-  .ach-desc { font-size: 0.62rem; color: var(--text-dim); margin-top: 0.25rem; line-height: 1.5; letter-spacing: 0.03em; }
-  .ach-xp-tag { font-size: 0.58rem; color: var(--accent3); letter-spacing: 0.08em; text-transform: uppercase; margin-top: 0.35rem; }
-  .ach-date { font-size: 0.58rem; color: var(--accent2); letter-spacing: 0.05em; margin-top: 0.2rem; }
-  .ach-progress { margin-top: 0.5rem; }
-  .ach-progress-bar { height: 3px; background: var(--border2); border-radius: 2px; overflow: hidden; }
-  .ach-progress-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent2)); border-radius: 2px; transition: width 1s ease; }
-  .ach-progress-label { font-size: 0.55rem; color: var(--text-faint); margin-top: 0.25rem; letter-spacing: 0.05em; }
-
-  /* unlock animation */
-  @keyframes unlockPop {
-    0% { transform: scale(0.8); opacity: 0; }
-    60% { transform: scale(1.05); }
+      60% { transform: scale(1.05); }
     100% { transform: scale(1); opacity: 1; }
   }
   .ach-card.unlocked { animation: unlockPop 0.4s ease forwards; }
@@ -289,6 +259,37 @@
   .add-msg { font-size: 0.7rem; margin-top: 0.85rem; min-height: 1.2em; }
   .add-msg.ok { color: #39d98a; }
   .add-msg.err { color: var(--red); }
+  /* ── FUEL LOG ── */
+  .fuel-wrap { background: var(--card); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+  .fuel-header { padding: 1.2rem 1.5rem; border-bottom: 1px solid var(--border); background: linear-gradient(135deg, #1a0808, #160000); }
+  .fuel-title { font-family: 'Bebas Neue', sans-serif; font-size: 1.6rem; color: var(--accent); letter-spacing: 0.08em; }
+  .fuel-sub { font-size: 0.6rem; color: var(--text-dim); letter-spacing: 0.1em; text-transform: uppercase; margin-top: 0.2rem; }
+  .fuel-stats-bar { display: grid; grid-template-columns: repeat(auto-fit,minmax(120px,1fr)); gap:1px; background:var(--border); border-bottom:1px solid var(--border); }
+  .fuel-form-wrap { padding: 1.2rem 1.5rem; border-bottom: 1px solid var(--border); }
+  .fuel-section-label { font-size: 0.58rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-dim); margin-bottom: 0.8rem; }
+  .fuel-table-wrap { }
+  .fuel-table-header { display:flex; justify-content:space-between; align-items:center; padding:0.8rem 1.2rem; border-bottom:1px solid var(--border); font-size:0.6rem; color:var(--text-dim); letter-spacing:0.1em; text-transform:uppercase; }
+  td.mileage-cell { color: #39d98a; font-size: 0.75rem; font-weight: 500; }
+  .fuel-price-status {
+    font-size: 0.65rem; margin-top: 0.6rem; min-height: 1.4em;
+    color: var(--text-dim); letter-spacing: 0.05em;
+    display: flex; align-items: center; gap: 0.5rem;
+  }
+  .fuel-price-status .fps-dot { width:6px;height:6px;border-radius:50%;background:var(--accent3);flex-shrink:0; }
+  .fuel-price-status.ok .fps-dot { background:#39d98a; }
+  .fuel-price-status.err .fps-dot { background:var(--red); }
+  .fuel-price-status.loading .fps-dot { animation: pulse 1s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+  td.price-cell { color: var(--accent3); font-size: 0.72rem; }
+
+  /* ── SHARE CARD ── */
+  .share-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+  @media (max-width: 600px) { .share-wrap { grid-template-columns: 1fr; } }
+  .share-controls { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 1.4rem; }
+  .share-options { display: flex; flex-direction: column; gap: 0.75rem; }
+  .share-preview-wrap { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 1.4rem; display: flex; flex-direction: column; align-items: center; }
+  #share-canvas { border: 1px solid var(--border2); }
+
 </style>
 </head>
 <body>
@@ -344,7 +345,9 @@
     <button class="tab-btn active" onclick="switchTab(this,'chart')">📈 Chart</button>
     <button class="tab-btn" onclick="switchTab(this,'add')">➕ Add Entry</button>
     <button class="tab-btn" onclick="switchTab(this,'data')">📋 All Data</button>
-    <button class="tab-btn" onclick="switchTab(this,'achievements')">🏆 Achievements</button>
+    <button class="tab-btn" onclick="switchTab(this,'fuel')">⛽ Fuel Log</button>
+    <button class="tab-btn" onclick="switchTab(this,'monthly')">📊 Monthly</button>
+    <button class="tab-btn" onclick="switchTab(this,'share')">📸 Share</button>
     <button class="tab-btn" onclick="switchTab(this,'info')">ℹ Sheet Info</button>
   </div>
 
@@ -395,16 +398,84 @@
   </div>
 
 
-  <div class="tab-panel" id="tab-achievements">
-    <div class="achievements-wrap">
-      <div class="ach-header">
-        <div>
-          <div class="ach-title">ACHIEVEMENTS</div>
-          <div class="ach-sub" id="ach-summary">Loading…</div>
-        </div>
-        <div class="ach-xp" id="ach-xp">0 XP</div>
+
+  <!-- FUEL LOG TAB -->
+  <div class="tab-panel" id="tab-fuel">
+    <div class="fuel-wrap">
+      <div class="fuel-header">
+        <div class="fuel-title">FUEL LOG</div>
+        <div class="fuel-sub">Track fill-ups and calculate mileage</div>
       </div>
-      <div class="ach-grid" id="ach-grid"></div>
+      <div class="fuel-stats-bar" id="fuel-stats"></div>
+      <div class="fuel-form-wrap">
+        <div class="fuel-section-label">Add Fill-up</div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Date</label>
+            <input type="date" id="fuel-date" />
+          </div>
+          <div class="form-group">
+            <label>Odometer (KM)</label>
+            <input type="number" id="fuel-odo" placeholder="e.g. 28500" min="0" />
+          </div>
+          <div class="form-group">
+            <label>Amount Paid (₹)</label>
+            <input type="number" id="fuel-amount" placeholder="e.g. 500" min="0" step="1" />
+          </div>
+          <button class="add-btn" id="fuel-btn" onclick="addFuel()">Add ⛽</button>
+        </div>
+        <div class="fuel-price-status" id="fuel-price-status"></div>
+        <div class="add-msg" id="fuel-msg"></div>
+      </div>
+      <div class="fuel-table-wrap">
+        <div class="fuel-table-header">
+          <span id="fuel-count">0 fill-ups</span>
+          <button class="btn btn-sm" onclick="clearFuel()">Clear All</button>
+        </div>
+        <div class="table-scroll">
+          <table>
+            <thead><tr><th>#</th><th>Date</th><th>Odometer</th><th>Amount Paid</th><th>Price/L</th><th>Litres</th><th>Mileage</th><th></th></tr></thead>
+            <tbody id="fuel-tbody"><tr><td colspan="8"><div class="empty-state">No fill-ups yet. Add your first one above.</div></td></tr></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MONTHLY BAR CHART TAB -->
+  <div class="tab-panel" id="tab-monthly">
+    <div class="chart-wrap">
+      <div class="chart-label">KM ridden per month — based on odometer checkpoints</div>
+      <div id="monthly-chart"><div class="loading-chart"><span>⏳</span> Loading…</div></div>
+    </div>
+    <div class="chart-wrap" style="margin-top:0">
+      <div class="chart-label">Cumulative KM by year</div>
+      <div id="yearly-chart"><div class="loading-chart"><span>⏳</span> Loading…</div></div>
+    </div>
+  </div>
+
+  <!-- SHARE CARD TAB -->
+  <div class="tab-panel" id="tab-share">
+    <div class="share-wrap">
+      <div class="share-controls">
+        <div class="fuel-section-label">Customize your card</div>
+        <div class="share-options">
+          <div class="form-group">
+            <label>Rider Name</label>
+            <input type="text" id="share-name" placeholder="Your name" value="Rider" />
+          </div>
+          <div class="form-group">
+            <label>Tagline</label>
+            <input type="text" id="share-tagline" placeholder="e.g. Born to ride" value="Born to ride" />
+          </div>
+        </div>
+        <button class="add-btn" style="margin-top:1rem" onclick="generateShareCard()">Generate Card 📸</button>
+      </div>
+      <div class="share-preview-wrap">
+        <div class="fuel-section-label" style="margin-bottom:0.75rem">Preview</div>
+        <canvas id="share-canvas" width="1080" height="1080" style="width:100%;max-width:400px;border-radius:8px;display:block"></canvas>
+        <button class="add-btn" id="download-btn" style="margin-top:1rem;display:none" onclick="downloadCard()">Download Image ⬇</button>
+      </div>
     </div>
   </div>
 
@@ -649,6 +720,8 @@ async function loadData() {
 }
 
 function refresh() { document.getElementById('entry-date').value = new Date().toISOString().slice(0,10);
+loadFuel();
+document.getElementById('fuel-date').value = new Date().toISOString().slice(0,10);
 loadData(); }
 
 function renderAll() {
@@ -660,7 +733,6 @@ function renderAll() {
   renderStats(sorted);
   renderChart(sorted);
   renderTable(sorted);
-  renderAchievements();
 }
 
 function renderStats(sorted) {
@@ -695,31 +767,76 @@ function renderChart(sorted) {
   if (!sorted || sorted.length < 2) { el.innerHTML = '<div class="loading-chart">Not enough data.</div>'; return; }
 
   const data = sorted.map(d => ({ ...d, dateObj: new Date(d.date) }));
-  const W = el.offsetWidth || 860;
-  const H = Math.min(340, Math.max(220, window.innerHeight * 0.38));
-  const margin = { top: 18, right: 18, bottom: 38, left: 62 };
-  const iW = W - margin.left - margin.right;
+
+  // Fixed pixels per month so every month is evenly spaced
+  const PX_PER_MONTH = 60;
+  const margin = { top: 18, right: 40, bottom: 44, left: 62 };
+  const H = Math.min(340, Math.max(240, window.innerHeight * 0.38));
   const iH = H - margin.top - margin.bottom;
 
-  const svg = d3.select('#chart').append('svg').attr('width',W).attr('height',H);
+  // Calculate total months span
+  const dateMin = data[0].dateObj;
+  const dateMax = data[data.length-1].dateObj;
+  const monthSpan = (dateMax.getFullYear() - dateMin.getFullYear()) * 12
+                  + (dateMax.getMonth() - dateMin.getMonth()) + 1;
+  const iW = Math.max(monthSpan * PX_PER_MONTH, 600);
+  const W = iW + margin.left + margin.right;
+
+  // Wrap in scrollable container
+  const scrollDiv = document.createElement('div');
+  scrollDiv.className = 'chart-scroll-outer';
+  el.appendChild(scrollDiv);
+
+  const hint = document.createElement('div');
+  hint.className = 'chart-scroll-hint';
+  hint.textContent = W > (el.offsetWidth || 860) ? '← scroll to explore →' : '';
+  el.appendChild(hint);
+
+  const svg = d3.select(scrollDiv).append('svg').attr('width', W).attr('height', H);
   const defs = svg.append('defs');
   const grad = defs.append('linearGradient').attr('id','areaGrad').attr('x1',0).attr('y1',0).attr('x2',0).attr('y2',1);
   grad.append('stop').attr('offset','0%').attr('stop-color','#e8001c').attr('stop-opacity',0.28);
   grad.append('stop').attr('offset','100%').attr('stop-color','#e8001c').attr('stop-opacity',0);
 
   const g = svg.append('g').attr('transform',`translate(${margin.left},${margin.top})`);
-  const x = d3.scaleTime().domain(d3.extent(data, d=>d.dateObj)).range([0,iW]);
-  const maxKm = Math.ceil(data[data.length-1].km/5000)*5000+2000;
-  const y = d3.scaleLinear().domain([0,maxKm]).range([iH,0]);
 
+  // Time scale spanning full width evenly
+  const x = d3.scaleTime().domain([dateMin, dateMax]).range([0, iW]);
+  const maxKm = Math.ceil(data[data.length-1].km / 5000) * 5000 + 2000;
+  const y = d3.scaleLinear().domain([0, maxKm]).range([iH, 0]);
+
+  // Horizontal grid + Y axis labels
   y.ticks(6).forEach(v => {
     g.append('line').attr('class','grid-line').attr('x1',0).attr('x2',iW).attr('y1',y(v)).attr('y2',y(v));
     g.append('text').attr('class','axis-text').attr('x',-8).attr('y',y(v)+4).attr('text-anchor','end').text(v>=1000?`${v/1000}k`:v);
   });
-  x.ticks(d3.timeMonth.every(Math.max(1,Math.ceil(data.length/8)))).forEach(t => {
-    g.append('text').attr('class','axis-text').attr('x',x(t)).attr('y',iH+18).attr('text-anchor','middle').text(d3.timeFormat("%b '%y")(t));
+
+  // X axis — one tick every month, uniformly spaced
+  const allMonths = d3.timeMonth.range(
+    d3.timeMonth.floor(dateMin),
+    d3.timeMonth.ceil(new Date(dateMax.getFullYear(), dateMax.getMonth()+1, 1))
+  );
+
+  // Decide label frequency so labels don't overlap (each label ~52px wide)
+  const labelEvery = Math.ceil(allMonths.length / Math.floor(iW / 52));
+
+  allMonths.forEach((t, i) => {
+    const xPos = x(t);
+    // Vertical month grid line (faint)
+    g.append('line')
+      .attr('x1', xPos).attr('x2', xPos)
+      .attr('y1', 0).attr('y2', iH)
+      .attr('stroke', 'var(--border)').attr('stroke-width', 0.5).attr('opacity', 0.5);
+
+    if (i % labelEvery === 0) {
+      g.append('text').attr('class','axis-text')
+        .attr('x', xPos).attr('y', iH + 16)
+        .attr('text-anchor','middle')
+        .text(d3.timeFormat("%b '%y")(t));
+    }
   });
 
+  // Area + line
   const area = d3.area().x(d=>x(d.dateObj)).y0(iH).y1(d=>y(d.km)).curve(d3.curveMonotoneX);
   const line = d3.line().x(d=>x(d.dateObj)).y(d=>y(d.km)).curve(d3.curveMonotoneX);
   g.append('path').datum(data).attr('class','area-path').attr('d',area);
@@ -728,8 +845,10 @@ function renderChart(sorted) {
   lp.attr('stroke-dasharray',`${len} ${len}`).attr('stroke-dashoffset',len)
     .transition().duration(1800).ease(d3.easeQuadInOut).attr('stroke-dashoffset',0);
 
+  // Dots + tooltip
   const tt = document.getElementById('tooltip');
   const wrap = document.querySelector('.chart-wrap');
+
   g.selectAll('.dot').data(data).enter().append('circle').attr('class','dot')
     .attr('cx',d=>x(d.dateObj)).attr('cy',d=>y(d.km)).attr('r',5)
     .on('mousemove', function(event, d) {
@@ -744,6 +863,7 @@ function renderChart(sorted) {
         ? `+${deltaKm.toLocaleString()} km over ${days}d${pace ? ` · ${pace} km/day` : ''}`
         : 'Journey start 🚴';
       const rect = wrap.getBoundingClientRect();
+      const scrollLeft = scrollDiv.scrollLeft;
       let left = event.clientX - rect.left + 14;
       let top = event.clientY - rect.top - 55;
       if (left + 185 > wrap.offsetWidth) left = event.clientX - rect.left - 195;
@@ -753,7 +873,10 @@ function renderChart(sorted) {
       d3.selectAll('.dot').classed('active',false);
       d3.select(this).classed('active',true);
     })
-    .on('mouseleave', function() { tt.classList.remove('visible'); d3.select(this).classed('active',false); });
+    .on('mouseleave', function() {
+      tt.classList.remove('visible');
+      d3.select(this).classed('active',false);
+    });
 }
 
 function renderTable(sorted) {
@@ -895,13 +1018,418 @@ function renderAchievements() {
   summary.textContent = `${unlocked} of ${ACHIEVEMENTS.length} unlocked · Keep riding to earn more`;
 }
 
+
+// ── FUEL LOG ─────────────────────────────────────────
+let FUEL_DATA = [];
+const FUEL_KEY = 'pulsar_fuel_v1';
+
+function loadFuel() {
+  try { const r = localStorage.getItem(FUEL_KEY); if (r) FUEL_DATA = JSON.parse(r); } catch(e) {}
+}
+function saveFuel() {
+  try { localStorage.setItem(FUEL_KEY, JSON.stringify(FUEL_DATA)); } catch(e) {}
+}
+
+async function fetchNagpurPetrolPrice(dateStr) {
+  const statusEl = document.getElementById('fuel-price-status');
+  statusEl.className = 'fuel-price-status loading';
+  statusEl.innerHTML = '<span class="fps-dot"></span> Fetching petrol price in Nagpur for ' + dateStr + '…';
+  try {
+    const today = new Date().toISOString().slice(0,10);
+    const prompt = dateStr === today
+      ? 'What is the current petrol price per litre in Nagpur, Maharashtra, India today? Reply with ONLY the numeric price in rupees, no text, no units. Example: 104.56'
+      : 'What was the petrol price per litre in Nagpur, Maharashtra, India on ' + dateStr + '? Reply with ONLY the numeric price in rupees, no text, no units. Example: 104.56';
+
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 100,
+        tools: [{ type: 'web_search_20250305', name: 'web_search' }],
+        messages: [{ role: 'user', content: prompt }]
+      })
+    });
+    const data = await response.json();
+    const text = (data.content || []).filter(b => b.type === 'text').map(b => b.text).join('');
+    const match = text.match(/\d{2,3}(?:\.\d{1,2})?/);
+    if (!match) throw new Error('Could not parse price from response');
+    const price = parseFloat(match[0]);
+    statusEl.className = 'fuel-price-status ok';
+    statusEl.innerHTML = '<span class="fps-dot"></span> Petrol price in Nagpur on ' + dateStr + ': <strong style="color:var(--text)">₹' + price.toFixed(2) + '/L</strong> (auto-fetched via web)';
+    return price;
+  } catch(e) {
+    statusEl.className = 'fuel-price-status err';
+    statusEl.innerHTML = '<span class="fps-dot"></span> Could not auto-fetch price (' + e.message + '). Entry saved without litres calculation.';
+    return null;
+  }
+}
+
+async function addFuel() {
+  const date   = document.getElementById('fuel-date').value;
+  const odo    = parseFloat(document.getElementById('fuel-odo').value);
+  const amount = parseFloat(document.getElementById('fuel-amount').value);
+  const msg    = document.getElementById('fuel-msg');
+  const btn    = document.getElementById('fuel-btn');
+
+  msg.className = 'add-msg';
+  msg.textContent = '';
+
+  if (!date) { msg.className='add-msg err'; msg.textContent='Please pick a date.'; return; }
+  if (isNaN(odo) || odo <= 0) { msg.className='add-msg err'; msg.textContent='Please enter a valid odometer reading.'; return; }
+  if (isNaN(amount) || amount <= 0) { msg.className='add-msg err'; msg.textContent='Please enter the amount paid in ₹.'; return; }
+
+  btn.disabled = true;
+  btn.textContent = 'Fetching…';
+
+  const pricePerL = await fetchNagpurPetrolPrice(date);
+  const litres = pricePerL ? parseFloat((amount / pricePerL).toFixed(3)) : null;
+
+  FUEL_DATA.push({ date, odo, amount, pricePerL: pricePerL || null, litres });
+  FUEL_DATA.sort((a,b) => new Date(a.date) - new Date(b.date));
+  saveFuel();
+  renderFuel();
+
+  document.getElementById('fuel-odo').value = '';
+  document.getElementById('fuel-amount').value = '';
+
+  msg.className = 'add-msg ok';
+  msg.textContent = litres
+    ? '✓ Logged! ₹' + amount + ' → ' + litres.toFixed(2) + 'L at ₹' + pricePerL.toFixed(2) + '/L'
+    : '✓ Logged! Price fetch failed — litres not calculated.';
+  setTimeout(() => { msg.textContent = ''; }, 6000);
+
+  btn.disabled = false;
+  btn.textContent = 'Add ⛽';
+}
+
+function clearFuel() {
+  if (!confirm('Clear all fuel logs?')) return;
+  FUEL_DATA = []; saveFuel(); renderFuel();
+}
+
+function renderFuel() {
+  const tbody    = document.getElementById('fuel-tbody');
+  const statsBar = document.getElementById('fuel-stats');
+  const countEl  = document.getElementById('fuel-count');
+  countEl.textContent = FUEL_DATA.length + ' fill-up' + (FUEL_DATA.length !== 1 ? 's' : '');
+
+  if (FUEL_DATA.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="8"><div class="empty-state">No fill-ups yet. Add your first one above.</div></td></tr>';
+    statsBar.innerHTML = '';
+    return;
+  }
+
+  const rows = FUEL_DATA.map((f, i) => {
+    const prev    = i > 0 ? FUEL_DATA[i-1] : null;
+    const distKm  = (prev && f.odo && prev.odo) ? (f.odo - prev.odo) : null;
+    const mileage = (distKm && f.litres && f.litres > 0) ? (distKm / f.litres).toFixed(1) : null;
+    return { ...f, distKm, mileage };
+  });
+
+  const totalSpent  = FUEL_DATA.reduce((s,f) => s + (f.amount  || 0), 0);
+  const totalLitres = FUEL_DATA.filter(f => f.litres).reduce((s,f) => s + f.litres, 0);
+  const mileages    = rows.filter(r => r.mileage).map(r => parseFloat(r.mileage));
+  const avgMileage  = mileages.length ? (mileages.reduce((a,b) => a+b, 0) / mileages.length).toFixed(1) : '–';
+  const bestMileage = mileages.length ? Math.max(...mileages).toFixed(1) : '–';
+
+  const fstats = [
+    { val: FUEL_DATA.length,                              label: 'Fill-ups'    },
+    { val: '₹' + Math.round(totalSpent).toLocaleString(), label: 'Total Spent' },
+    { val: totalLitres ? totalLitres.toFixed(1)+'L' : '–', label: 'Total Fuel' },
+    { val: avgMileage  + ' km/L',                         label: 'Avg Mileage' },
+    { val: bestMileage + ' km/L',                         label: 'Best Mileage'},
+  ];
+  statsBar.innerHTML = fstats.map(s =>
+    `<div class="stat-item"><div class="s-val">${s.val}</div><div class="s-label">${s.label}</div></div>`
+  ).join('');
+
+  tbody.innerHTML = rows.map((r, i) => `<tr>
+    <td style="color:var(--text-faint)">${i+1}</td>
+    <td class="date-cell">${fmtDate(new Date(r.date))}</td>
+    <td class="km-cell">${r.odo.toLocaleString()} km</td>
+    <td class="price-cell">₹${r.amount.toLocaleString()}</td>
+    <td class="price-cell">${r.pricePerL ? '₹' + r.pricePerL.toFixed(2) : '<span style="color:var(--text-faint)">–</span>'}</td>
+    <td>${r.litres ? r.litres.toFixed(2) + ' L' : '<span style="color:var(--text-faint)">–</span>'}</td>
+    <td class="mileage-cell">${r.mileage ? r.mileage + ' km/L' : '–'}</td>
+    <td><button class="del-btn" onclick="deleteFuel(${i})">✕</button></td>
+  </tr>`).join('');
+}
+
+function deleteFuel(i) {
+  if (!confirm('Delete this fill-up?')) return;
+  FUEL_DATA.splice(i, 1); saveFuel(); renderFuel();
+}
+
+// ── MONTHLY BAR CHART ────────────────────────────────
+function renderMonthly() {
+  const sorted = getSorted();
+  renderMonthlyBar(sorted);
+  renderYearlyBar(sorted);
+}
+
+function interpolateMonthlyKm(sorted) {
+  if (sorted.length < 2) return [];
+  const months = {};
+  // For each consecutive pair, distribute KM linearly across months
+  for (let i = 1; i < sorted.length; i++) {
+    const prev = sorted[i-1], cur = sorted[i];
+    const kmDiff = cur.km - prev.km;
+    const d1 = new Date(prev.date), d2 = new Date(cur.date);
+    const totalDays = (d2-d1)/86400000;
+    if (totalDays <= 0) continue;
+    // Walk day by day and attribute KM proportionally to each month
+    let cursor = new Date(d1);
+    while (cursor <= d2) {
+      const key = cursor.getFullYear()+'-'+String(cursor.getMonth()+1).padStart(2,'0');
+      months[key] = (months[key]||0) + (kmDiff/totalDays);
+      cursor.setDate(cursor.getDate()+1);
+    }
+  }
+  return Object.entries(months).sort().map(([k,v])=>({ month:k, km:Math.round(v) }));
+}
+
+function renderMonthlyBar(sorted) {
+  const el = document.getElementById('monthly-chart');
+  el.innerHTML = '';
+  if (!sorted || sorted.length < 2) { el.innerHTML = '<div class="loading-chart">Not enough data.</div>'; return; }
+
+  const monthData = interpolateMonthlyKm(sorted);
+  if (!monthData.length) return;
+
+  const W = el.offsetWidth || 860;
+  const H = 260;
+  const margin = { top:20, right:16, bottom:50, left:56 };
+  const iW = W-margin.left-margin.right;
+  const iH = H-margin.top-margin.bottom;
+
+  const svg = d3.select('#monthly-chart').append('svg').attr('width',W).attr('height',H);
+  const g = svg.append('g').attr('transform',`translate(${margin.left},${margin.top})`);
+
+  const x = d3.scaleBand().domain(monthData.map(d=>d.month)).range([0,iW]).padding(0.25);
+  const y = d3.scaleLinear().domain([0, d3.max(monthData,d=>d.km)*1.15]).range([iH,0]);
+
+  // Grid
+  y.ticks(5).forEach(v=>{
+    g.append('line').attr('class','grid-line').attr('x1',0).attr('x2',iW).attr('y1',y(v)).attr('y2',y(v));
+    g.append('text').attr('class','axis-text').attr('x',-8).attr('y',y(v)+4).attr('text-anchor','end').text(v>=1000?v/1000+'k':v);
+  });
+
+  // X labels — show every 3rd to avoid clutter
+  monthData.forEach((d,i)=>{
+    if (i % Math.ceil(monthData.length/14) !== 0) return;
+    const [yr,mo] = d.month.split('-');
+    const label = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][parseInt(mo)-1]+' '+yr.slice(2);
+    g.append('text').attr('class','axis-text').attr('x',x(d.month)+x.bandwidth()/2).attr('y',iH+14).attr('text-anchor','middle').attr('transform',`rotate(-35,${x(d.month)+x.bandwidth()/2},${iH+14})`).text(label);
+  });
+
+  // Bars
+  const maxKm = d3.max(monthData,d=>d.km);
+  g.selectAll('.bar').data(monthData).enter().append('rect')
+    .attr('x',d=>x(d.month)).attr('y',iH).attr('width',x.bandwidth()).attr('height',0)
+    .attr('rx',2)
+    .attr('fill', d => d.km === maxKm ? '#ff3347' : 'var(--accent)')
+    .attr('opacity', d => d.km === maxKm ? 1 : 0.75)
+    .transition().duration(800).delay((_,i)=>i*18).ease(d3.easeQuadOut)
+    .attr('y',d=>y(d.km)).attr('height',d=>iH-y(d.km));
+
+  // Tooltip on hover
+  g.selectAll('.bar-hit').data(monthData).enter().append('rect')
+    .attr('x',d=>x(d.month)).attr('y',0).attr('width',x.bandwidth()).attr('height',iH)
+    .attr('fill','transparent').attr('cursor','pointer')
+    .on('mouseover', function(_,d) {
+      const [yr,mo] = d.month.split('-');
+      const label = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][parseInt(mo)-1]+' '+yr;
+      d3.select(this.parentNode).append('text').attr('class','bar-tip')
+        .attr('x',x(d.month)+x.bandwidth()/2).attr('y',y(d.km)-6)
+        .attr('text-anchor','middle').attr('fill','var(--text)').attr('font-size','10px')
+        .attr('font-family','DM Mono, monospace').text(d.km.toLocaleString()+' km');
+    })
+    .on('mouseout', function() { d3.selectAll('.bar-tip').remove(); });
+}
+
+function renderYearlyBar(sorted) {
+  const el = document.getElementById('yearly-chart');
+  el.innerHTML = '';
+  if (!sorted || sorted.length < 2) return;
+
+  // Group by year
+  const years = {};
+  sorted.forEach(d => {
+    const yr = new Date(d.date).getFullYear();
+    if (!years[yr] || d.km > years[yr]) years[yr] = d.km;
+  });
+  // For each year, compute KM gained
+  const entries = Object.entries(years).sort();
+  const yearData = entries.map(([yr,km],i)=>{
+    const prevKm = i>0 ? parseInt(entries[i-1][1]) : sorted[0].km;
+    return { year:yr, km: km - (i===0 ? sorted[0].km : parseInt(entries[i-1][1])) };
+  });
+
+  const W = el.offsetWidth || 860;
+  const H = 200;
+  const margin = { top:16, right:16, bottom:36, left:56 };
+  const iW = W-margin.left-margin.right;
+  const iH = H-margin.top-margin.bottom;
+
+  const svg = d3.select('#yearly-chart').append('svg').attr('width',W).attr('height',H);
+  const g = svg.append('g').attr('transform',`translate(${margin.left},${margin.top})`);
+
+  const x = d3.scaleBand().domain(yearData.map(d=>d.year)).range([0,iW]).padding(0.35);
+  const y = d3.scaleLinear().domain([0, d3.max(yearData,d=>d.km)*1.2]).range([iH,0]);
+
+  y.ticks(4).forEach(v=>{
+    g.append('line').attr('class','grid-line').attr('x1',0).attr('x2',iW).attr('y1',y(v)).attr('y2',y(v));
+    g.append('text').attr('class','axis-text').attr('x',-8).attr('y',y(v)+4).attr('text-anchor','end').text(v>=1000?v/1000+'k':v);
+  });
+
+  yearData.forEach(d=>{
+    g.append('text').attr('class','axis-text').attr('x',x(d.year)+x.bandwidth()/2).attr('y',iH+16).attr('text-anchor','middle').text(d.year);
+  });
+
+  g.selectAll('.ybar').data(yearData).enter().append('rect')
+    .attr('x',d=>x(d.year)).attr('y',iH).attr('width',x.bandwidth()).attr('height',0).attr('rx',3)
+    .attr('fill','var(--accent)').attr('opacity',0.85)
+    .transition().duration(900).ease(d3.easeQuadOut)
+    .attr('y',d=>y(d.km)).attr('height',d=>iH-y(d.km));
+
+  yearData.forEach(d=>{
+    g.append('text').attr('class','axis-text')
+      .attr('x',x(d.year)+x.bandwidth()/2).attr('y',y(d.km)-5)
+      .attr('text-anchor','middle').attr('fill','var(--text)')
+      .text(d.km.toLocaleString()+' km');
+  });
+}
+
+// ── SHARE CARD ───────────────────────────────────────
+function generateShareCard() {
+  const canvas = document.getElementById('share-canvas');
+  const ctx = canvas.getContext('2d');
+  const W = 1080, H = 1080;
+  canvas.width = W; canvas.height = H;
+
+  const sorted = getSorted();
+  const last = sorted[sorted.length-1];
+  const first = sorted[0];
+  const totalKm = last ? last.km : 0;
+  const totalDays = last ? Math.round((new Date(last.date)-new Date(first.date))/86400000) : 0;
+  const avgDay = totalDays > 0 ? (totalKm/totalDays).toFixed(1) : '0';
+  const name = document.getElementById('share-name').value || 'Rider';
+  const tagline = document.getElementById('share-tagline').value || 'Born to ride';
+
+  // Background
+  ctx.fillStyle = '#0a0a0a';
+  ctx.fillRect(0,0,W,H);
+
+  // Red racing stripes
+  ctx.fillStyle = '#e8001c';
+  ctx.fillRect(0,0,W,6);
+  ctx.fillRect(0,H-6,W,6);
+  ctx.globalAlpha = 0.08;
+  for(let i=0;i<W;i+=120) { ctx.fillStyle='#e8001c'; ctx.fillRect(i,0,1,H); }
+  ctx.globalAlpha = 1;
+
+  // Side accent bar
+  const grad = ctx.createLinearGradient(0,0,0,H);
+  grad.addColorStop(0,'#e8001c');
+  grad.addColorStop(0.5,'#ff3347');
+  grad.addColorStop(1,'#e8001c');
+  ctx.fillStyle = grad;
+  ctx.fillRect(0,0,8,H);
+  ctx.fillRect(W-8,0,8,H);
+
+  // PULSAR N160 logo top-left
+  ctx.font = 'bold 52px "Bebas Neue", sans-serif';
+  ctx.fillStyle = '#e8001c';
+  ctx.shadowColor = '#e8001c';
+  ctx.shadowBlur = 20;
+  ctx.fillText('PULSAR N160', 60, 100);
+  ctx.shadowBlur = 0;
+
+  // N160 badge underline
+  ctx.strokeStyle = '#e8001c';
+  ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.moveTo(60,112); ctx.lineTo(400,112); ctx.stroke();
+
+  // Rider name
+  ctx.font = '700 90px "Bebas Neue", sans-serif';
+  ctx.fillStyle = '#f0e8e8';
+  ctx.fillText(name.toUpperCase(), 60, 260);
+
+  // Tagline
+  ctx.font = '300 32px "DM Mono", monospace';
+  ctx.fillStyle = '#8a6a6a';
+  ctx.fillText(tagline, 62, 310);
+
+  // Big KM number
+  ctx.font = '700 220px "Bebas Neue", sans-serif';
+  ctx.fillStyle = '#e8001c';
+  ctx.shadowColor = '#e8001c';
+  ctx.shadowBlur = 40;
+  ctx.fillText(totalKm.toLocaleString(), 60, 580);
+  ctx.shadowBlur = 0;
+
+  ctx.font = '400 48px "Bebas Neue", sans-serif';
+  ctx.fillStyle = '#8a6a6a';
+  ctx.fillText('KILOMETRES RIDDEN', 62, 640);
+
+  // Divider
+  ctx.strokeStyle = '#2a2020';
+  ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(60,680); ctx.lineTo(W-60,680); ctx.stroke();
+
+  // Stats row
+  const stats = [
+    { val: Math.round(totalDays/30.4)+'', label: 'MONTHS' },
+    { val: avgDay, label: 'AVG KM/DAY' },
+    { val: sorted.length+'', label: 'CHECKPOINTS' },
+  ];
+  const colW = (W-120)/3;
+  stats.forEach((s,i)=>{
+    const cx = 60 + i*colW + colW/2;
+    ctx.font = '700 72px "Bebas Neue", sans-serif';
+    ctx.fillStyle = '#f0e8e8';
+    ctx.textAlign = 'center';
+    ctx.fillText(s.val, cx, 790);
+    ctx.font = '400 24px "DM Mono", monospace';
+    ctx.fillStyle = '#8a6a6a';
+    ctx.fillText(s.label, cx, 828);
+  });
+  ctx.textAlign = 'left';
+
+  // Since date
+  ctx.font = '300 26px "DM Mono", monospace';
+  ctx.fillStyle = '#5a3a3a';
+  const sinceStr = first ? 'Since ' + fmtDate(new Date(first.date)).toUpperCase() : '';
+  ctx.fillText(sinceStr, 62, 940);
+
+  // Bottom right watermark
+  ctx.font = '300 22px "DM Mono", monospace';
+  ctx.fillStyle = '#3a2a2a';
+  ctx.textAlign = 'right';
+  ctx.fillText('Powered by Pulsar N160 Tracker', W-60, 940);
+  ctx.textAlign = 'left';
+
+  document.getElementById('download-btn').style.display = 'block';
+}
+
+function downloadCard() {
+  const canvas = document.getElementById('share-canvas');
+  const a = document.createElement('a');
+  a.download = 'pulsar-n160-ride-card.png';
+  a.href = canvas.toDataURL('image/png');
+  a.click();
+}
+
 function switchTab(btn, name) {
   document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
   document.getElementById('tab-'+name).classList.add('active');
   btn.classList.add('active');
   if (name==='chart') renderChart(getSorted());
-  if (name==='achievements') renderAchievements();
+  if (name==='monthly') renderMonthly();
+  if (name==='fuel') renderFuel();
+  if (name==='share') generateShareCard();
 }
 
 loadData();
